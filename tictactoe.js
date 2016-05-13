@@ -1,18 +1,5 @@
 
-// $(function () {
-//   $('.letter').click(function () {
-//     var currentDisplay = $(this).text();
-//     if (currentDisplay === "") {
-//       $(this).text("O");
-//     } else if (currentDisplay === "O") {
-//       $(this).text("X");
-//     } else if (currentDisplay === "X") {
-//       $(this).text("");
-//     }
-//   });
-// });
-
-var turn = true;
+var turn = 0;
 var winningCombos = [
   [0, 1, 2],
   [3, 4, 5],
@@ -23,10 +10,27 @@ var winningCombos = [
   [0, 4, 8],
   [2, 4, 6]
 ];
-
-function computerMove(board, combo) {
-
+function firstMove () {
+  var moves =  getCurrentMoves ();
+  var move = moves[4];
+  if (move === ""){
+    $('#B2').text("X")
+  } else {
+    $('#A1').text("X")
+  }
+  turn = turn + 1;
 }
+
+// function playerOccupiesSquares (player, squares, board) {
+//   for (var i = 0; i < squares.length; i++) {
+//     var idx = squares[i];
+//     var value = board[idx];
+//     if (value !== player) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
 
 function checkWinner (board) {
   for (var i = 0; i < winningCombos.length; i++) {
@@ -54,7 +58,7 @@ function playerOccupiesSquares (player, squares, board) {
 
 
 function getCurrentMoves () {
-    var buttons = $('button');
+    var buttons = $('.letter');
     var moves = [];
     for (var i = 0; i < buttons.length; i++) {
       var button = $(buttons[i]);
@@ -66,20 +70,36 @@ function getCurrentMoves () {
 $(function () {
   $('.letter').click(function () {
     var currentDisplay = $(this).text();
-      if (turn === true) {
+      if (currentDisplay === '') {
+      if (turn % 2 === 0) {
         $(this).text("O");
-        turn = false;
-      } else if (turn === false) {
+      } else {
         $(this).text("X");
-        turn = true;
       }
-      if (currentDisplay === "O" || "X") {
-         $(this).off();
+        turn = turn + 1;
+      // if (currentDisplay === "O" || "X") {
+      //    $(this).off();
+      // }
+      if (turn === 1) {
+        firstMove ();
       }
       var board = getCurrentMoves();
       var winner = checkWinner (board);
       if (winner) {
-        alert("The winner is " + winner)
+        $('#display-box')
+        .text('The winner is ' + winner)
+        .show();
       }
+    } else if (currentDisplay === 'o' || currentDisplay === 'x') {
+        // do nothing
+      }
+      if (turn === 9) {
+        $('#winner').text('Draw');
+        $('#play-again-button').show();
+      }
+    });
+
+    $('#reset').click(function () {
+      location.reload();
   });
 });
