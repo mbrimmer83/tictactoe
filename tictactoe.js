@@ -3,7 +3,7 @@ var turn = 0;
 var winningCombos = [
   [0, 1, 2],
   [3, 4, 5],
-  [6, 6, 8],
+  [6, 7, 8],
   [0, 3, 6],
   [1, 4, 7],
   [2, 5, 8],
@@ -18,7 +18,6 @@ function firstMove () {
   } else {
     $('#A1').text("X")
   }
-  turn = turn + 1;
 }
 
 function computerCheckMove (player, squares, board) { /* this function checks each winning combo and places a N into array if it is
@@ -29,7 +28,7 @@ function computerCheckMove (player, squares, board) { /* this function checks ea
     var idx = squares[i];
     var value = board[idx];
     if (value === player) {
-      bestMoveId.push("N");
+      bestMoveId.push("O");
     } else {
         bestMoveId.push(idx);
       }
@@ -37,72 +36,100 @@ function computerCheckMove (player, squares, board) { /* this function checks ea
     return bestMoveId;
 }
 
-function computerMakeMove (board) {
-  var moveCount = 0;
-  var rightMove;
+function computerMakeMoveX (board) {
   for (var i = 0; i < winningCombos.length; i++) {
+    var moveCount = 0;
+    var rightMove;
     var combo = winningCombos[i];
     var moves = computerCheckMove("X", combo, board) // passes "O" to player
-      for (var i = 0; i < moves.length; i++) {
-        if ( moves[i] === "N") {
+      for (var j = 0; j < moves.length; j++) {
+        if ( moves[j] === "X") {
           moveCount = moveCount + 1;
-        } else if (moves[i] !== "N") {
-          rightMove = moves[i];
+        } else if (moves[j] !== "X") {
+          rightMove = moves[j];
         }
-      }
       if (moveCount === 2) {
         if (rightMove === 0) {
           $('#A1').text("X");
+          return;
         } else if (rightMove === 1) {
           $('#A2').text("X");
+          return;
         } else if (rightMove === 2) {
           $('#A3').text("X");
+          return;
         } else if (rightMove === 3) {
           $('#B1').text("X");
+          return;
         } else if (rightMove === 4) {
           $('#B2').text("X");
+          return;
         } else if (rightMove === 5) {
           $('#B3').text("X");
+          return;
         } else if (rightMove === 6) {
           $('#C1').text("X");
+          return;
         } else if (rightMove === 7) {
           $('#C2').text("X");
+          return;
         } else if (rightMove === 8) {
           $('#C3').text("X");
+          return;
         }
+        return;
       }
-    var moveCount = 0
-    var moves = computerCheckMove("O", combo, board) // passes "X" to player
-    for (var i = 0; i < moves.length; i++) {
-      if ( moves[i] === "N") {
-        moveCount = moveCount + 1;
-      } else if (moves[i] !== "N") {
-        rightMove = moves[i];
-      }
-    }
-    if (moveCount === 2) {
-      if (rightMove === 0) {
-        $('#A1').text("O");
-      } else if (rightMove === 1) {
-        $('#A2').text("O");
-      } else if (rightMove === 2) {
-        $('#A3').text("O");
-      } else if (rightMove === 3) {
-        $('#B1').text("O");
-      } else if (rightMove === 4) {
-        $('#B2').text("O");
-      } else if (rightMove === 5) {
-        $('#B3').text("O");
-      } else if (rightMove === 6) {
-        $('#C1').text("O");
-      } else if (rightMove === 7) {
-        $('#C2').text("O");
-      } else if (rightMove === 8) {
-        $('#C3').text("O");
-      }
-    }
+     }
+   }
+  }
+
+function computerMakeMoveO (board) {
+for (var i = 0; i < winningCombos.length; i++) {
+  var rightMove = 0;
+  var moveCount = 0;
+  var combo = winningCombos[i];
+  var moves = computerCheckMove("O", combo, board) // passes "X" to player
+  for (var j = 0; j < moves.length; j++) {
+    if ( moves[j] === "O") {
+      moveCount = moveCount + 1;
+    } else if (moves[j] !== "O") {
+      rightMove = moves[j];
     }
   }
+  if (moveCount === 2) {
+    if (rightMove === 0) {
+      $('#A1').text("X");
+      return;
+    } else if (rightMove === 1) {
+      $('#A2').text("X");
+      return;
+    } else if (rightMove === 2) {
+      $('#A3').text("X");
+      return;
+    } else if (rightMove === 3) {
+      $('#B1').text("X");
+      return;
+    } else if (rightMove === 4) {
+      $('#B2').text("X");
+      return;
+    } else if (rightMove === 5) {
+      $('#B3').text("X");
+      return;
+    } else if (rightMove === 6) {
+      $('#C1').text("X");
+      return;
+    } else if (rightMove === 7) {
+      $('#C2').text("X");
+      return;
+    } else if (rightMove === 8) {
+      $('#C3').text("X");
+      return;
+    }
+    return;
+  }
+}
+}
+
 
 function checkWinner (board) {
   for (var i = 0; i < winningCombos.length; i++) {
@@ -154,10 +181,22 @@ $(function () {
       // }
       if (turn === 1) {
         firstMove ();
+        turn = turn + 1;
+      }
+      // if (turn % 2 === 1) {
+      //   var board = getCurrentMoves();
+      //   var bestMove = computerMakeMoveX (board);
+      //   turn = turn + 1;
+      // }
+      if (turn % 2 === 1) {
+        var board =getCurrentMoves();
+        var bestMove = computerMakeMoveO (board);
+        turn = turn + 1;
       }
       if (turn !== 1 && turn % 2 === 1) {
         var board = getCurrentMoves();
         var winner = checkWinner (board);
+        turn = turn + 1;
     }
       if (winner) {
         $('#display-box')
