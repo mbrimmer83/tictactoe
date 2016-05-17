@@ -12,20 +12,19 @@ var winningCombos = [
 ];
 function firstMove () {
   var moves =  getCurrentMoves ();
-  if (moves[4] === "O"){
+  if (moves[5] !== "O"){
     $('#B2').text("X")
-  } else if ()
+  } else if (moves[5] === "O"){
     $('#A1').text("X")
   }
 }
 
 function nextMove () {
   var moves = getCurrentMoves ();
-  var move = moves[8];
-  if (move === "O") {
-    $('#A3').text("X")
+  if (moves[8] === "O") {
+    $('#B3').text("X")
   } else {
-    $('#C3').text("X")
+    $('#B3').text("X")
   }
 }
 
@@ -218,6 +217,10 @@ $(function () {
         firstMove ();
         turn = turn + 1;
       }
+      if (turn  === 3) {
+        nextMove ();
+        turn = turn +1;
+      }
       if (turn % 2 === 1) {
         var board = getCurrentMoves();
         var bestMove = computerMakeMoveX (board);
@@ -225,10 +228,6 @@ $(function () {
       if (turn % 2 === 1) {
         var board =getCurrentMoves();
         var bestMove = computerMakeMoveO (board);
-      }
-      if (turn % 2 === 1) {
-        nextMove ();
-        turn = turn +1;
       }
       if (turn !== 1) {
         var board = getCurrentMoves();
