@@ -12,19 +12,20 @@ var winningCombos = [
 ];
 function firstMove () {
   var moves =  getCurrentMoves ();
-  if (moves[5] !== "O"){
+  if (moves[4] !== "O"){
     $('#B2').text("X")
-  } else if (moves[5] === "O"){
+  } else if (moves[4] === "O"){
     $('#A1').text("X")
   }
 }
 
 function nextMove () {
   var moves = getCurrentMoves ();
-  if (moves[8] === "O") {
+  if (moves[0] === "O" && moves[8]) {
     $('#B3').text("X")
+    turn += turn;
   } else {
-    $('#B3').text("X")
+    return;
   }
 }
 
@@ -219,7 +220,6 @@ $(function () {
       }
       if (turn  === 3) {
         nextMove ();
-        turn = turn +1;
       }
       if (turn % 2 === 1) {
         var board = getCurrentMoves();
