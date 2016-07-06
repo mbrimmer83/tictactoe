@@ -13,16 +13,19 @@ var winningCombos = [
 function firstMove () {
   var moves =  getCurrentMoves ();
   if (moves[4] !== "O"){
-    $('#B2').text("X")
+    $('#B2').text("X");
   } else if (moves[4] === "O"){
-    $('#A1').text("X")
+    $('#A1').text("X");
   }
 }
 
-function nextMove () {
+function secondMove () {
   var moves = getCurrentMoves ();
-  if (moves[0] === "O" && moves[8]) {
-    $('#B3').text("X")
+  if (moves[0] === "O" && moves[8] === "O") {
+    $('#B3').text("X");
+    turn += turn;
+  } else if (moves[6] === "O" && moves[2] === "0") {
+    $('B5').text("X");
     turn += turn;
   } else {
     return;
@@ -53,7 +56,7 @@ function computerMakeMoveX (board) {
     var rightMove;
     var totalMove = 0;
     var combo = winningCombos[i];
-    var moves = computerCheckMove(combo, board) // passes "O" to player
+    var moves = computerCheckMove(combo, board); // passes "O" to player
       for (var j = 0; j < moves.length; j++) {
         if ( moves[j] === "X") {
           moveCount = moveCount + 1;
@@ -112,7 +115,7 @@ for (var i = 0; i < winningCombos.length; i++) {
   var moveCount = 0;
   var totalMove = 0;
   var combo = winningCombos[i];
-  var moves = computerCheckMove(combo, board) // passes "X" to player
+  var moves = computerCheckMove(combo, board); // passes "X" to player
   for (var j = 0; j < moves.length; j++) {
     if ( moves[j] === "O") {
       moveCount = moveCount + 1;
@@ -167,13 +170,14 @@ for (var i = 0; i < winningCombos.length; i++) {
 
 
 function checkWinner (board) {
+  var board = getCurrentMoves();
   for (var i = 0; i < winningCombos.length; i++) {
     var combo = winningCombos[i];
     if (playerOccupiesSquares("O", combo, board)) { // passes "O" to player
       return "O";
     }
     if (playerOccupiesSquares("X", combo, board)) { // passes "X" to player
-      return "X"
+      return "X";
     }
   }
   return null;
@@ -219,19 +223,18 @@ $(function () {
         turn = turn + 1;
       }
       if (turn  === 3) {
-        nextMove ();
+        secondMove ();
+      } else {
+        computerMakeMoveX();
       }
       if (turn % 2 === 1) {
-        var board = getCurrentMoves();
-        var bestMove = computerMakeMoveX (board);
+        computerMakeMoveX ();
       }
-      if (turn % 2 === 1) {
-        var board =getCurrentMoves();
-        var bestMove = computerMakeMoveO (board);
+      else if (turn % 2 === 1) {
+        computerMakeMoveO ();
       }
       if (turn !== 1) {
-        var board = getCurrentMoves();
-        var winner = checkWinner (board);
+        var winner = checkWinner ();
     }
       if (winner) {
         $('#display-box')
